@@ -4,17 +4,17 @@ Authors: Basova Victoria, Malysheva Polina
 
 ## Table of content
 
-[Part 1. Get and check data](pPart-1.-Get-and-check-data)
+[Part 1. Get and check data](#part-1-get-and-check-data)
 
-[Part 2. Inspect raw sequencing data with FastQC](#part-2.-Inspect-raw-sequencing-data-with-FastQC)
+[Part 2. Inspect raw sequencing data with FastQC](#part-2-inspect-raw-sequencing-data-with-fastqc)
 
-[Part 3. Filtering the reads](#part-3.-Filtering-the-reads)
+[Part 3. Filtering the reads](#part-3-filtering-the-reads)
 
-[Part 4. Aligning sequences to reference](#part-4.-Aligning-sequences-to-reference)
+[Part 4. Aligning sequences to reference](#part-4-aligning-sequences-to-reference)
 
-[Part 5. Variant calling](#part-5.-Variant-calling)
+[Part 5. Variant calling](#part-5-variant-calling)
 
-[Part 6. Automatic SNP annotation](#part-6.-Automatic-SNP-annotation)
+[Part 6. Automatic SNP annotation](#part-6-automatic-snp-annotation)
 
 ## Part 1. Get and check data
 
@@ -94,8 +94,6 @@ poor conditions, and dust got on it.
 
 ## Part 3. Filtering the reads
 
-Вика, вставь, пожалуйста, скрины фасткуси после триммоматика
-
 Let's remove reads with poor quality and trim them from the end and from the beginning to improve the overall quality of the reads with Trimmomatic.
 
 ``` bash
@@ -115,7 +113,7 @@ Reverse Only Surviving: 273 (0,06%)
 
 **Dropped: 128 (0,03%)** 
 
-If we increase the quality score at all steps to 30, we will filter out more reads and fewer reads will go into analysis
+If we increase the quality score at all steps to 30, we will filter out more reads and fewer reads will go into analysis. 
 
 Input Read Pairs: 455876 
 
@@ -126,6 +124,16 @@ Forward Only Surviving: 9243 (2.03%)
 Reverse Only Surviving: 291 (0.06%) 
 
 **Dropped: 142 (0.03%)**
+
+Let's look at FastQC report after trimming and filtering our data:
+
+- Per base sequence quality. The quality scores of nucleotides at the end of the read increased
+
+![image](https://github.com/user-attachments/assets/ebb3109d-1bb7-4d72-8c2f-72e463a76e8b)
+
+- Per tile sequence quality. Since we have removed the low-quality reads, this graph will contain fewer zones where there were problems with sequencing
+
+![image](https://github.com/user-attachments/assets/5e49d14c-4db1-48c1-a54a-2a7ce3afcfdc)
 
 ## Part 4. Aligning sequences to reference
 
