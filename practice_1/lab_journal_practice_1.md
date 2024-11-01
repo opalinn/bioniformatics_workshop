@@ -215,7 +215,7 @@ samtools mpileup -f GCF_000005845.2_ASM584v2_genomic.fna alignment_sorted.bam > 
 To call actual variants, we will use VarScan with 50% threshold because we had a pure culture of bacteria whose genome was sequenced
 
 ```bash
-varscan mpileup2snp my.mpileup --min-var-freq 0.5 --variants --output-vcf 1 > VarScan_results.vcf 
+varscan mpileup2snp my.mpileup --min-var-freq 0.9 --variants --output-vcf 1 > VarScan_results.vcf 
 ```
 
 ## Part 6. Automatic SNP annotation
