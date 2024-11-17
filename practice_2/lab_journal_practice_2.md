@@ -4,7 +4,15 @@ Authors: Basova Victoria, Malysheva Polina
 
 ## Table of content
 
-[Part 1. Get and check data](#part-1-get-and-check-data)
+[Part 1. Get and inspect data](#part-1-get-and-inspect-data)
+
+[Part 2. Alignment](#part-2-alignment)
+
+[Part 3. Look for common and rare variants with VarScan](#part-3-look-for-common-and-rare-variants-with-varscan)
+
+[Part 4. Work with the control sample sequencing data](#part-4-work-with-the-control-sample-sequencing-data)
+
+[Part 5. Compare the control results to patient's results](#part-5-compare-the-control-results-to-patients-results)
 
 ## Part 1. Get and inspect data
 
@@ -50,41 +58,38 @@ FastQC Report
 
 ## Part 2. Alignment
 
-Get reference sequence
+All steps to create a .mpileup file are described in details in [lab journal #1](https://github.com/opalinn/bioniformatics_workshop/blob/main/practice_1/lab_journal_practice_1.md)
 
-Index the reference file, align your roommate’s viral data to the reference sequence and make an mpileup. 
+## Part 3. Look for common and rare variants with VarScan
 
- samtools flagstat alignment.bam
- 
-359374 + 0 in total (QC-passed reads + QC-failed reads)
+Since our variants can be quite rare, we set the depth limit with the -d flag equal to 32000. That's more than the average coverage (30206.4)
 
-356345 + 0 primary
+```
+samtools mpileup -d 30200 -f reference_ha_gene.fasta alignment_sorted.bam > p2.mpileup
+```
 
-0 + 0 secondary
+After looking for common variants with --min-var-freq 0.95 we found 5 mutations. With a parameter --min-var-freq 0.001 we found 18 rare mutations. 
 
-3029 + 0 supplementary
+To get information from the .vcf file about the place where the mutation occurred, we use one of the following two methods: 
 
-0 + 0 duplicates
+```
+bcftools query -f '%POS\t%REF\t%ALT\t[%FREQ]\n' ali_1_001.vcf > ali_1_freq.txt
+```
+```
+cat p2.vcf | awk 'NR>24 {print $1, $2, $4, $5}'
+```
 
-0 + 0 primary duplicates
+## Part 4. Work with the control sample sequencing data
 
-358118 + 0 mapped (99.65% : N/A)
+Next, we needed to analyze three control samples. The work with them is the same as with the previous files: from quality check to aligning the reads to a reference and extract some data from .vcf files.
 
-355089 + 0 primary mapped (99.65% : N/A)
+## Part 5. Compare the control results to patient's results
 
-0 + 0 paired in sequencing
+This step was done using excel spreadsheets. The file with the table presents mutation frequencies for 4 samples (patient and 3 controls), the mean of them, the standard deviation and the value equal to the sum of the mean and three standard deviations were calculated. 
 
-0 + 0 read1
 
-0 + 0 read2
 
-0 + 0 properly paired (N/A : N/A)
 
-0 + 0 with itself and mate mapped
 
-0 + 0 singletons (N/A : N/A)
 
-0 + 0 with mate mapped to a different chr
-
-0 + 0 with mate mapped to a different chr (mapQ>=5)
 
