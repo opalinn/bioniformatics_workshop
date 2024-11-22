@@ -4,6 +4,8 @@ Authors: Basova Victoria, Malysheva Polina
 
 ## Table of content
 
+[Part 0. Snakemake](#part-0-snakemake)
+
 [Part 1. Get and inspect data](#part-1-get-and-inspect-data)
 
 [Part 2. Alignment](#part-2-alignment)
@@ -13,6 +15,40 @@ Authors: Basova Victoria, Malysheva Polina
 [Part 4. Work with the control sample sequencing data](#part-4-work-with-the-control-sample-sequencing-data)
 
 [Part 5. Compare the control results to patient's results](#part-5-compare-the-control-results-to-patients-results)
+
+## Part 0. Snakemake
+All steps executed during this study are available in `Snakefile`.
+
+### How to use
+
+- create a directory containing reference `.fasta` file, samples `.fastq.gz` files and `Snakefile`
+- create a virtual environment and install all requirements
+- create a `config.yaml` file with actual names of reference and samples
+Example:
+```yaml
+reference: sequence.fasta
+samples:
+  - sample_0
+  - sample_1
+  - sample_2
+  - sample_3
+```
+- run snakemake 
+```bash
+snakemake -p --cores <preferable num of cores>
+```
+
+### Results
+- The program creates a `.vcf` file for each sample and a `.txt` file with a table, which consists position, nucleotide substitution and frequence from each `.vcf` file
+- The program also creates all intermediate files in a working directory
+
+### Requirements
+- Snakemake
+- bwa
+- samtools
+- seqkit
+- bcftools
+- varscan
 
 ## Part 1. Get and inspect data
 

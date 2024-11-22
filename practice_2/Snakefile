@@ -1,0 +1,108 @@
+configfile: "config.yaml"
+
+rule all:
+    input:
+        expand("frequencies_tables/{sample}.freq.txt", sample=config["samples"])
+
+rule bwa_index:
+    input:
+        fasta=config["reference"]
+    output:
+        expand("{reference}.{ext}", reference=config["reference"], ext=["amb", "ann", "bwt", "pac", "sa"])
+    shell:
+        """
+        bwa index {input.fasta}
+        """
+
+rule calculate_reference_length:
+    input:
+        fasta=config["reference"]
+    output:
+        txt="reference_length.txt"
+    shell:
+        """
+        grep -v ">" {input.fasta} | awk '{{total += length($0)}} END {{print total}}' > {output.txt}
+        """
+
+rule calculate_reads_length:
+    input:
+        fastq="{sample}.fastq.gz"
+    output:
+        txt="{sample}.reads_length.txt"
+    shell:
+        """
+        seqkit stats {input.fastq} | awk 'NR==2 {{print $5}}' | sed 's/,//g' > {output.txt}
+        """
+
+rule calculate_coverage:
+    input:
+        ref_length="reference_length.txt",
+        reads_length="{sample}.reads_length.txt"
+    output:
+        txt="{sample}.coverage.txt"
+    shell:
+        """
+        ref_length=$(cat {input.ref_length})
+        reads_length=$(cat {input.reads_length})
+        coverage=$(echo "scale=2; $reads_length / $ref_length" | bc)
+        echo $coverage > {output.txt}
+        """
+
+rule align_sort:
+    input:
+        fasta=config["reference"],
+        bwa_index=expand("{reference}.{ext}", reference=config["reference"], ext=["amb", "ann", "bwt", "pac", "sa"]),
+        fastq="{sample}.fastq.gz"
+    output:
+        bam="{sample}.sorted.bam"
+    shell:
+        """
+        bwa mem {input.fasta} {input.fastq} | \
+        samtools sort -o {output.bam}
+        """
+
+rule index_bam:
+    input:
+        bam="{sample}.sorted.bam"
+    output:
+        bai="{sample}.sorted.bam.bai"
+    shell:
+        """
+        samtools index {input.bam}
+        """
+
+rule create_mpileup:
+    input:
+        bam="{sample}.sorted.bam",
+        bai="{sample}.sorted.bam.bai",
+        fasta=config["reference"],
+        coverage="{sample}.coverage.txt"
+    output:
+        mpileup="{sample}.mpileup"
+    shell:
+        """
+        coverage=$(cat {input.coverage})
+        depth=$(echo "$coverage + 1000" | bc)
+        samtools mpileup -d $depth -f {input.fasta} {input.bam} > {output.mpileup}
+        """
+
+rule create_vcf:
+    input:
+        mpileup = "{sample}.mpileup"
+    output:
+        vcf = "{sample}.001.vcf"
+    shell:
+        """
+        varscan mpileup2snp {input.mpileup} --min-var-freq 0.001 --variants --output-vcf 1 > {output.vcf}
+        """
+
+rule create_freq_table:
+    input:
+        vcf = "{sample}.001.vcf"
+    output:
+        txt = "{sample}.freq.txt"
+    shell:
+        """
+        bcftools query -f '%POS\t%REF\t%ALT\t[%FREQ]\n' {input.vcf} > {output.txt}
+        """
+
