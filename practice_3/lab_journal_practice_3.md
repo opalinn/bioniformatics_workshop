@@ -58,6 +58,20 @@ _SRR292862_
 
 ## Part 3. Assembling E. coli X genome from paired reads
 
+Use SPAdes for this task:
+
+```
+/bin/spades.py	-1	/data/SRR292862/SRR292862_S2_L001_R1_001.fastq.gz	-2	/data/SRR292862/SRR292862_S2_L001_R2_001.fastq.gz	-o	/spades_output_srr292862	
+```
+After running on single pair-end _SRR292678_, the output directory contained **contigs.fasta**, **scaffolds.fasta**, and other files. 
+
+We need to check quality of assembled genomes via QUAST for _SRR292678_ (first run, single pair-end)
+
+```
+python quast.py -o /data/quast_out_srr292678 contigs.fasta
+```
+It produced some files. HTML report is in this folder (quast_srr292678.html)
+
 ## Part 5. 
 
 ## Part 5. Genome Annotation
