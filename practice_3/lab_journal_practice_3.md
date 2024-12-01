@@ -70,9 +70,7 @@ We need to check quality of assembled genomes via QUAST for _SRR292678_ (first r
 ```
 python quast.py -o /data/quast_out_srr292678 contigs.fasta
 ```
-It produced some files. HTML report is in this folder (quast_srr292678.html)
-
-## Part 5. 
+It produced some files. HTML reports are in this folder. 
 
 ## Part 5. Genome Annotation
 
@@ -94,5 +92,9 @@ Run
 
 ## Part 6. Finding the closest relative of E. coli X
 
-We need to locate 16S rRNA in the assembled E. coli X genome to find relatives of E. coli X. So we used barnap to predict 16S rRNA genes. 
+We need to locate 16S rRNA in the assembled E. coli X genome to find relatives of E. coli X. So we used barnap to predict 16S rRNA genes and save sequences of genes to .txt:  
+
+```
+barrnap prokka_SRR292678/PROKKA_12012024.fna --outseq
+```
 
