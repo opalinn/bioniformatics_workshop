@@ -10,6 +10,10 @@ Authors: Basova Victoria, Malysheva Polina
 
 [Part 3. Assembling E. coli X genome from paired reads](#part-3-assembling-e-coli-x-genome-from-paired-reads)
 
+[Part 4. Genome Annotation](#part-4-genome-annotation)
+
+[Part 5. Finding the closest relative of E. coli X](#part-5-finding-the-closest-relative-of-e-coli-x)
+
 ## Part 1. Exploring the dataset
 
 We have three libraries from the TY2482 sample 
@@ -56,7 +60,7 @@ _SRR292862_
 
 ## Part 2. K-mer profile and genome size estimation (optional)
 
-## Part 3. Assembling E. coli X genome from paired reads
+## Part 3. Assembling E. coli X genome 
 
 Use SPAdes for this task:
 
@@ -72,17 +76,27 @@ python quast.py -o /data/quast_out_srr292678 contigs.fasta
 ```
 It produced some files. HTML reports are in this folder. 
 
-## Part 5. Genome Annotation
+After we ran SPAdes again by consolidating three libraries: SRR292678 as a paired ends,  SRR292862 and SRR292770 as a mate pairs.
 
-We used prokka to create a genomic annotation
+QUAST 	report for single SRR292678:
 
-Install
+- N50	105346
 
-```
-conda install -c conda-forge -c bioconda -c defaults prokka
-```
+- N90	21026
 
-Run
+- contigs	206
+
+QUAST	report for all 3 libs:
+
+- N50	335515
+
+- N90	79998
+
+- contigs	105
+
+## Part 4. Genome Annotation
+
+We used prokka to create a genomic annotation.
 
 ```
  prokka --outdir prokka_SRR292678/ --compliant spades_output_SRR292678/scaffolds.fasta
@@ -90,11 +104,11 @@ Run
 
 `--compliant` for force Genbank/ENA/DDJB compliance (default OFF)
 
-## Part 6. Finding the closest relative of E. coli X
+## Part 5. Finding the closest relative of E. coli X
 
 We need to locate 16S rRNA in the assembled E. coli X genome to find relatives of E. coli X. So we used barnap to predict 16S rRNA genes and save sequences of genes to .txt:  
 
 ```
-barrnap prokka_SRR292678/PROKKA_12012024.fna --outseq
+barrnap prokka_SRR292678/PROKKA_12012024.fna --outseq filename.fasta
 ```
 
