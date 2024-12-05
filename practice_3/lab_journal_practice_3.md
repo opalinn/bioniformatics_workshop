@@ -60,6 +60,25 @@ _SRR292862_
 
 ## Part 2. K-mer profile and genome size estimation (optional)
 
+To calculate the possible number of k-mers and predict the genome size after assembling we used jellyfish:
+
+```
+jellyfish count -m 31 -C -s 1G -o kmers_31.jf SRR292678_F.fastq SRR292678_R.fastq
+
+jellyfish histo -o kmers_31.histo kmers_31.jf
+```
+
+N: Depth of coverage, M: Kmer peak, K: Kmer-size, L: avg read length T: Total bases
+
+N = (M*L)/(L-K+1)
+
+Genome_size = T/N
+
+N = (66.9 * 90)/(90 – 31 + 1) = 6021 / 60 = 100,35 
+
+Genome size is 4.93 Mbp (494.9 Mbp / 100)
+
+
 ## Part 3. Assembling E. coli X genome 
 
 Use SPAdes for this task:
