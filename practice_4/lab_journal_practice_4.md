@@ -47,27 +47,12 @@ seqtk subseq augustus_proteins.fasta blast_res_on_massspec.txt > output_file.fas
 
 We predicted where these proteins are located in the cell based on their sequences using two web servers: WoLF PSORT and TargetP. 
 
-WoLF PSORT predicts cellular localization of proteins based on the presence of a signal peptide on their N-terminus. 
+WoLF PSORT predicts cellular localization of proteins based on the presence of a signal peptide on their N-terminus. List of genes with tag 'nucl': g5927.t1, g7861.t1, g8100.t1, g8312.t1, g10513.t1, g10514.t1, g11960.t1, g14472.t1, g15484.t1, g16318.t1, g16368.t1. 
 
 TargetP also predicts the subcellular localization of eukaryotic proteins. The location assignment is based on the predicted presence of any of the N-terminal presequences: chloroplast transit peptide (cTP), mitochondrial targeting peptide (mTP) or secretory pathway signal peptide (SP). 
 
+The result files are located in this folder.
+
 ## Part 5. BLAST search and Pfam prediction
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+We perfomed BLAST search for protein sequences against the “UniProtKB/Swiss-Prot” database. We also predicted possible functions for proteins using the hmmscan function from the HMMER package. All results are summarized in proteins_data.xlsx. 
