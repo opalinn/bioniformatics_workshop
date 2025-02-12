@@ -16,7 +16,7 @@ Authors: Basova Victoria, Malysheva Polina
 
 ## Part 1. Obtaining data
 
-We will work with raw 23andMe data from Mikhail Raiko (the proper human genome reference version is GRCh37) and [Manu Sporny](https://github.com/msporny/dna) (the proper human genome reference version is GRCh36)
+We will work with raw 23andMe data from Mikhail Raiko (the proper human genome reference version is GRCh37).
 
 ## Part 2. File conversion 
 
@@ -36,9 +36,17 @@ plink --23file snp_teacher.txt --recode vcf --out snp_teacher_clean --output-chr
 
 ## Part 3. Origins, haplogroups
 
-[mthap version 0.19c (2023-08-15)](https://dna.jameslick.com/mthap/)  online tool is used for haplogroup determination 
+[mthap version 0.19c (2023-08-15)](https://dna.jameslick.com/mthap/) online tool is used for haplogroup determination on mtDNA data
+
+[YSEQ Clade Finder (version 1.0)](https://predict.yseq.net/clade-finder/) online tool is used for haplogroup determination on Y chromosome data
 
 ## Part 4. Annotation - sex and eye colour
+
+Sex determination using a command line tool:
+
+```bash
+grep Y snp_teacher.txt
+```
 
 A set of markers for eye and hair color are taken from the [article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3694299/): rs12896399, rs12913832, rs1545397, rs16891982, rs1426654, rs885479, rs6119471, rs12203592 
 
@@ -48,4 +56,9 @@ Command line to search for SNPs of interest:
 grep -w -f snp_eye_color.txt snp_teacher.txt > eye_teacher_snp.txt
 ```
 
+All of the SNPs found were annotated using the SNPedia database. Additional validation of the results is provided by the [The HIrisPlex-S system](https://hirisplex.erasmusmc.nl/)
+
 ## Part 5. Annotation of all SNPs, selection of clinically relevant ones using VEP (Variant Effect Predictor)
+
+[VEP online tool](https://www.ensembl.org/vep)
+
