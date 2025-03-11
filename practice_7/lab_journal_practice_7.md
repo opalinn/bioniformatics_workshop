@@ -6,13 +6,13 @@ Authors: Basova Victoria, Malysheva Polina
 
 [Part 1. Obtaining data](#part-1-obtaining-data)
 
-[Part 2. Data analysis using dada2 script](#part-3-data-analysis-using-dada2-script)
+[Part 2. 16S rRNA analysis using dada2 script](#part-2-16s-rrna-analysis-using-dada2-script)
 
 ## Part 1. Obtaining data
 
 The data was downloaded from the SRA archive via ftp server. SRA IDs: SRR957750, SRR957753, SRR957756, SRR957760, SRR986773, SRR986774, SRR986778, SRR986779, SRR986782
 
-## Part 2. Data analysis using dada2 script
+## Part 2. 16S rRNA analysis using dada2 script
 
 Link to script [here](https://benjjneb.github.io/dada2/tutorial.html)
 
@@ -30,3 +30,21 @@ Link to script [here](https://benjjneb.github.io/dada2/tutorial.html)
 
 7. Extract data to MicrobiomeAnalyst: made ASV table and metadata for online server
 
+## Part 3. Whole-metagenomic analysis
+
+For this part we took data from G12 individual. 
+
+1. Shotgun sequence data profiling using Kraken2
+
+```bash
+conda install kraken2
+```
+```bash
+kraken2-build --standard --db $g12_ind
+
+kraken2 --db /g12_ind --output out_file --report rep_file /data/SRR957742.fastq
+```
+
+2. Visualization of the Kraken results as a Sankey diagram
+
+Use online-server [Pavian metagenomics data explorer](https://fbreitwieser.shinyapps.io/pavian/#)
