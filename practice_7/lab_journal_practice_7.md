@@ -8,6 +8,8 @@ Authors: Basova Victoria, Malysheva Polina
 
 [Part 2. 16S rRNA analysis using dada2 script](#part-2-16s-rrna-analysis-using-dada2-script)
 
+[Part 3. Whole-metagenomic analysis](#part-3-whole-metagenomic-analysis)
+
 ## Part 1. Obtaining data
 
 The data was downloaded from the SRA archive via ftp server. SRA IDs: SRR957750, SRR957753, SRR957756, SRR957760, SRR986773, SRR986774, SRR986778, SRR986779, SRR986782
@@ -48,3 +50,28 @@ kraken2 --db /g12_ind --output out_file --report rep_file /data/SRR957742.fastq
 2. Visualization of the Kraken results as a Sankey diagram
 
 Use online-server [Pavian metagenomics data explorer](https://fbreitwieser.shinyapps.io/pavian/#)
+
+3. Comparison with ancient Tannerella forsythia genome
+
+Align contigs on the reference:
+
+```bash
+bwa index genome.fasta
+
+bwa mem genome.fasta SRR986773.fastq > alignment.sam
+
+samtools view -S -b alignment.sam > alignment.bam
+
+samtools sort alignment.bam -o alignment_sorted.bam
+
+samtools index alignment_sorted.bam
+
+```
+
+Search for new regions in the modern strain:
+
+```bash
+bedtools bamtobed -i alignment_sorted.bam  > alignment_sorted.bed
+
+bedtools intersect -v -a alignment_sorted.bed -b annotation.gff3 > intersect.bed
+```
